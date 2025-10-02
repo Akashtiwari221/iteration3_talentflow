@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useUser } from '../../contexts/UserContext';
 import PreAssessmentForm from './PreAssessmentForm';
+import './AssessmentRuntime.css';
 
 const AssessmentRuntime = () => {
   const { jobId } = useParams();
@@ -11,6 +12,7 @@ const AssessmentRuntime = () => {
   const [answers, setAnswers] = useState({});
   const [currentSection, setCurrentSection] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [secondsLeft, setSecondsLeft] = useState(null);
 
   const handleFormSubmit = (details) => {
     setCandidate(details);
@@ -56,6 +58,10 @@ const AssessmentRuntime = () => {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to load assessment');
         if (mounted) setAssessment(data);
+        if (mounted) {
+          const limit = Number(data.timeLimit || 0)
+          if (limit > 0) setSecondsLeft(limit * 60)
+        }
       } catch (e) {
         if (mounted) setAssessment(null);
       } finally {
@@ -65,6 +71,17 @@ const AssessmentRuntime = () => {
     if (jobId) load();
     return () => { mounted = false };
   }, [jobId]);
+
+  useEffect(() => {
+    if (secondsLeft == null) return
+    if (secondsLeft <= 0) {
+      const fakeEvent = { preventDefault: () => {} }
+      handleSubmit(fakeEvent)
+      return
+    }
+    const t = setTimeout(() => setSecondsLeft((s) => (s == null ? s : s - 1)), 1000)
+    return () => clearTimeout(t)
+  }, [secondsLeft])
 
   useEffect(() => {
     if (user?.role === 'candidate' && user?.name && user?.email) {

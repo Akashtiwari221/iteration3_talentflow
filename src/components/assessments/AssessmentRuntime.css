@@ -1,0 +1,14 @@
+.assessment-runtime { display: grid; gap: 1rem; }
+.runtime-header { display: flex; justify-content: space-between; align-items: center; }
+.runtime-title { margin: 0; }
+.runtime-meta { display: flex; gap: 0.75rem; align-items: center; }
+.runtime-progress { color: #666; font-size: 0.9rem; }
+.runtime-timer { background: #e9ecef; color: #333; padding: 4px 8px; border-radius: 999px; font-size: 0.9rem; }
+.runtime-timer.danger { background: #fff3cd; color: #856404; }
+.runtime-body { display: grid; grid-template-columns: 80px 1fr; gap: 1rem; }
+.runtime-sections { display: flex; flex-direction: column; gap: 8px; }
+.section-pill { background: #f1f5f9; color: #333; border: 1px solid #e2e8f0; border-radius: 999px; padding: 8px 0; cursor: pointer; }
+.section-pill.active { background: var(--primary, #007bff); color: white; border-color: var(--primary, #007bff); }
+.runtime-form { background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); padding: 1rem; }
+.section-title { margin-top: 0; }
+.runtime-actions { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1rem; }

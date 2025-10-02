@@ -2,7 +2,18 @@
   --bg: #0f1226;
   --card: #0f1724;
   --muted: #9aa4b2;
+  --primary: #007bff;
+  --accent: #22c55e;
+  --surface: #ffffff;
 }
+
+body.theme-ocean { --primary: #0ea5e9; --accent: #0369a1; }
+body.theme-sunset { --primary: #ef4444; --accent: #f59e0b; }
+body.theme-forest { --primary: #22c55e; --accent: #14532d; }
+body.theme-midnight { --primary: #0f172a; --accent: #1e293b; }
+body.theme-orchid { --primary: #a855f7; --accent: #6b21a8; }
+body.theme-solar { --primary: #f59e0b; --accent: #fbbf24; }
+body.theme-slate { --primary: #64748b; --accent: #334155; }
 
 * {
   box-sizing: border-box;

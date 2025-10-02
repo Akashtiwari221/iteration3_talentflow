@@ -12,6 +12,7 @@ import CandidatePortal from './components/candidate/CandidatePortal'
 import AssessmentRuntime from './components/assessments/AssessmentRuntime'
 import SideNav from './components/ui/SideNav'
 import RoleSwitcher from './components/ui/RoleSwitcher'
+import ThemeSwitcher from './components/ui/ThemeSwitcher'
 import './utils/autoArchiveService.jsx' // Import to start the service
 import './App.css'
 
@@ -52,7 +53,7 @@ function AppContent() {
   return (
     <div className="app-shell">
       <SideNav userRole={user?.role} />
-      <button 
+      <button
         onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
         style={{
           position: 'fixed',
@@ -70,7 +71,10 @@ function AppContent() {
         Toggle Role Switcher
       </button>
       {showRoleSwitcher && <RoleSwitcher />}
-      
+
+      {/* Theme Switcher (left of role switcher) */}
+      <ThemeSwitcher />
+
       <main className="main-content">
         <Routes>
           {/* Jobs routes - different components based on role */}
