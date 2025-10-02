@@ -5,6 +5,7 @@ export default function JobDeployModal({ isOpen, onClose, onConfirm, title = 'De
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState('');
   const [selectedJobId, setSelectedJobId] = useState(null);
+  const [timeLimit, setTimeLimit] = useState(60);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -57,6 +58,7 @@ export default function JobDeployModal({ isOpen, onClose, onConfirm, title = 'De
           {loading ? (
             <div className="loading-text">Loading jobs...</div>
           ) : (
+            <>
             <div className="jobs-list" role="list">
               {jobs.map((job) => (
                 <label key={job.id} className={`job-row ${String(selectedJobId) === String(job.id) ? 'selected' : ''}`} role="listitem">
@@ -77,6 +79,20 @@ export default function JobDeployModal({ isOpen, onClose, onConfirm, title = 'De
                 <div className="empty-state">No active jobs found.</div>
               )}
             </div>
+            <div className="time-row">
+              <label className="time-label" htmlFor="timeLimit">Time limit (minutes)</label>
+              <input
+                id="timeLimit"
+                type="number"
+                min={5}
+                max={240}
+                step={5}
+                className="time-input"
+                value={timeLimit}
+                onChange={(e) => setTimeLimit(Number(e.target.value))}
+              />
+            </div>
+            </>
           )}
         </div>
 
@@ -85,7 +101,7 @@ export default function JobDeployModal({ isOpen, onClose, onConfirm, title = 'De
           <button
             className="btn btn-primary"
             disabled={!selectedJob}
-            onClick={() => selectedJob && onConfirm(selectedJob)}
+            onClick={() => selectedJob && onConfirm(selectedJob, timeLimit)}
           >
             Deploy to Selected Job
           </button>
