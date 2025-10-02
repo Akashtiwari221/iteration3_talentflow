@@ -1,0 +1,49 @@
+.candidates-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.candidates-table th,
+.candidates-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.candidates-table th {
+  background-color: #f4f6f8;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #333;
+}
+
+.candidates-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.candidate-name {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.stage-pill {
+  padding: 4px 10px;
+  border-radius: 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.skill-tag {
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-right: 5px;
+  display: inline-block;
+}

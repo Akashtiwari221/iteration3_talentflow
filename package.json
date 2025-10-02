@@ -1,0 +1,45 @@
+{
+  "name": "talentflow",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.0.1",
+    "@fortawesome/free-solid-svg-icons": "^7.0.1",
+    "@fortawesome/react-fontawesome": "^3.0.2",
+    "@hello-pangea/dnd": "^18.0.1",
+    "classnames": "^2.3.2",
+    "customize-cra": "^1.0.0",
+    "dexie": "^3.2.2",
+    "gsap": "^3.13.0",
+    "localforage": "^1.10.0",
+    "msw": "^1.2.1",
+    "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.12.1",
+    "react-scripts": "^5.0.1",
+    "react-virtualized": "^9.22.3",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-scripts test"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
