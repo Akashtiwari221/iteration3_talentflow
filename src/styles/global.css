@@ -5,15 +5,16 @@
   --primary: #007bff;
   --accent: #22c55e;
   --surface: #ffffff;
+  --text-color: #0b1220;
 }
 
-body.theme-ocean { --primary: #0ea5e9; --accent: #0369a1; }
-body.theme-sunset { --primary: #ef4444; --accent: #f59e0b; }
-body.theme-forest { --primary: #22c55e; --accent: #14532d; }
-body.theme-midnight { --primary: #0f172a; --accent: #1e293b; }
-body.theme-orchid { --primary: #a855f7; --accent: #6b21a8; }
-body.theme-solar { --primary: #f59e0b; --accent: #fbbf24; }
-body.theme-slate { --primary: #64748b; --accent: #334155; }
+body.theme-ocean { --primary: #0ea5e9; --accent: #0369a1; --page-bg: #eef8ff; --surface: #ffffff; --text-color: #0b1220; }
+body.theme-sunset { --primary: #ef4444; --accent: #f59e0b; --page-bg: #fff4ec; --surface: #ffffff; --text-color: #0b1220; }
+body.theme-forest { --primary: #22c55e; --accent: #14532d; --page-bg: #effcf4; --surface: #ffffff; --text-color: #0b1220; }
+body.theme-midnight { --primary: #3b82f6; --accent: #1f2937; --page-bg: #0b1220; --surface: #101826; --text-color: #e5e7eb; }
+body.theme-orchid { --primary: #a855f7; --accent: #6b21a8; --page-bg: #faf5ff; --surface: #ffffff; --text-color: #0b1220; }
+body.theme-solar { --primary: #f59e0b; --accent: #fbbf24; --page-bg: #fff8eb; --surface: #ffffff; --text-color: #0b1220; }
+body.theme-slate { --primary: #64748b; --accent: #334155; --page-bg: #f1f5f9; --surface: #ffffff; --text-color: #0b1220; }
 
 * {
   box-sizing: border-box;
@@ -26,8 +27,8 @@ html, body, #root {
 body {
   font-family: Inter, system-ui, Arial;
   margin: 0;
-  background: #f5f7fb;
-  color: #0b1220;
+  background: var(--page-bg, #f5f7fb);
+  color: var(--text-color, #0b1220);
 }
 
 .topbar {
@@ -68,8 +69,11 @@ body {
 }
 
 .card {
-  background: #fff;
+  background: var(--surface, #fff);
   border-radius: 10px;
   padding: 16px;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
 }
+
+a { color: var(--primary, #007bff); }
+.btn.btn-primary, button.btn-primary { background-color: var(--primary, #007bff); color: #fff; }
