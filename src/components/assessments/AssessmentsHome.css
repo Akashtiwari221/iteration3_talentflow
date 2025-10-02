@@ -1,0 +1,16 @@
+.assessments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.assessments-create-btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.empty-assessments {
+  text-align: center;
+  color: #666;
+}

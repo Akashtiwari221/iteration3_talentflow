@@ -11,6 +11,7 @@ const AssessmentBuilder = () => {
   const [assessment, setAssessment] = useState({
     title: '',
     jobId: '',
+    timeLimit: 60,
     rounds: [
       {
         title: '',
@@ -124,6 +125,20 @@ const AssessmentBuilder = () => {
             type="text"
             name="jobId"
             value={assessment.jobId}
+            onChange={handleAssessmentChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label>Time Limit (minutes)</label>
+          <input
+            type="number"
+            name="timeLimit"
+            min={5}
+            max={240}
+            step={5}
+            value={assessment.timeLimit}
             onChange={handleAssessmentChange}
             required
           />

@@ -59,7 +59,7 @@ export default function CandidateJobDetail() {
           <h4>Assessment</h4>
           <p>An assessment is available for this job application.</p>
           <Link to={`/assessment/${jobId}`}>
-            <button className="btn btn-primary">Take Assessment</button>
+            <button className="btn btn-primary">Start Assessment</button>
           </Link>
         </div>
       ) : (

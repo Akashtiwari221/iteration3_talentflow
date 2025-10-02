@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useUser } from '../../contexts/UserContext';
 import './CandidatePortal.css';
 
-// Mock function to fetch applied jobs for a candidate
-const fetchAppliedJobs = async () => {
-  // In a real app, this would be an API call
-  return [
-    { id: 1, title: 'Software Engineer', department: 'Technology', status: 'Applied', hasAssessment: true },
-    { id: 2, title: 'Product Manager', department: 'Product', status: 'Under Review', hasAssessment: false },
-    { id: 3, title: 'Data Scientist', department: 'Analytics', status: 'Applied', hasAssessment: true },
-  ];
-};
-
 const CandidatePortal = () => {
+  const { user } = useUser();
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getAppliedJobs = async () => {
-      const jobs = await fetchAppliedJobs();
-      setAppliedJobs(jobs);
-      setLoading(false);
+      try {
+        if (!user?.id) return;
+        const appsRes = await fetch(`/api/applications?candidateId=${user.id}`);
+        const appsData = await appsRes.json();
+        const applications = appsData.items || [];
+
+        const jobs = await Promise.all(applications.map(async (app) => {
+          const jobRes = await fetch(`/api/jobs/${app.jobId}`);
+          const job = await jobRes.json();
+          const asRes = await fetch(`/api/assessments/${app.jobId}`);
+          const assessment = await asRes.json();
+          return {
+            id: job.id,
+            title: job.title,
+            department: job.department,
+            status: app.status || 'Applied',
+            hasAssessment: !!assessment?.isActive,
+          };
+        }));
+
+        setAppliedJobs(jobs);
+      } catch (e) {
+        setAppliedJobs([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getAppliedJobs();
-  }, []);
+  }, [user?.id]);
 
   if (loading) {
     return <div>Loading applied jobs...</div>;
@@ -49,6 +64,11 @@ const CandidatePortal = () => {
           </div>
         </div>
       ))}
+      {appliedJobs.length === 0 && (
+        <div className="card" style={{ textAlign: 'center', color: '#666' }}>
+          No applied jobs yet.
+        </div>
+      )}
     </div>
   );
 };

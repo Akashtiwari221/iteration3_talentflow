@@ -36,6 +36,6 @@
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: var(--primary, #007bff);
   color: white;
 }

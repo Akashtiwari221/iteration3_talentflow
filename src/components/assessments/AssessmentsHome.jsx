@@ -2,27 +2,61 @@ import React, { useState, useEffect } from 'react';
 import AssessmentCard from './AssessmentCard';
 import AssessmentBuilder from './AssessmentBuilder';
 import AssessmentResults from './AssessmentResults';
+import JobDeployModal from './JobDeployModal';
+import Notification from '../common/Notification';
+import './AssessmentBuilder.css';
+import './AssessmentCard.css';
+import './AssessmentsHome.css';
 
 const AssessmentsHome = () => {
   const [assessments, setAssessments] = useState([]);
   const [showBuilder, setShowBuilder] = useState(false);
   const [viewingResultsOf, setViewingResultsOf] = useState(null);
+  const [deployingAssessment, setDeployingAssessment] = useState(null);
+  const [notice, setNotice] = useState(null);
+
+  const loadAssessments = async () => {
+    try {
+      const res = await fetch('/api/assessments');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load assessments');
+      setAssessments(data.items || []);
+    } catch (e) {
+      setAssessments([]);
+      setNotice({ message: `Failed to load assessments: ${e.message}`, type: 'error' });
+    }
+  };
 
   useEffect(() => {
-    // In a real app, you would fetch the list of saved assessments
-    // For now, we'll use a mock list
-    setAssessments([
-      { id: 1, title: 'Frontend Developer Assessment', rounds: [{ title: 'Coding Challenge', questions: [] }] },
-      { id: 2, title: 'Backend Developer Assessment', rounds: [{ title: 'System Design', questions: [] }] },
-    ]);
+    loadAssessments();
   }, []);
 
-  const handleDeploy = (assessmentId) => {
-    const jobId = prompt('Enter the Job ID to deploy this assessment to:');
-    if (jobId) {
-      console.log(`Deploying assessment ${assessmentId} to job ${jobId}`);
-      // Here you would typically make an API call to associate the assessment with the job
-      alert(`Assessment ${assessmentId} deployed to Job ID: ${jobId}`);
+  const handleDeploy = (assessment) => {
+    setDeployingAssessment(assessment);
+  };
+
+  const confirmDeploy = async (job, selectedTimeLimit) => {
+    if (!deployingAssessment || !job) return;
+    try {
+      const body = {
+        title: deployingAssessment.title,
+        description: deployingAssessment.description,
+        timeLimit: Number(selectedTimeLimit || deployingAssessment.timeLimit || 60),
+        sections: deployingAssessment.sections || deployingAssessment.rounds || [],
+        isActive: true
+      };
+      const res = await fetch(`/api/assessments/${job.id}` , {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to deploy');
+      setNotice({ message: `Assessment deployed to "${job.title}"`, type: 'success' });
+      setDeployingAssessment(null);
+      loadAssessments();
+    } catch (e) {
+      setNotice({ message: `Deployment failed: ${e.message}`, type: 'error' });
     }
   };
 
@@ -47,12 +81,11 @@ const AssessmentsHome = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="assessments-header">
         <h2>Assessments</h2>
-        <button 
-          className="btn btn-primary" 
+        <button
+          className="btn btn-primary assessments-create-btn"
           onClick={() => setShowBuilder(true)}
-          style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem' }}
         >
           Create New Assessment
         </button>
@@ -60,13 +93,35 @@ const AssessmentsHome = () => {
       <div>
         {assessments.map((assessment) => (
           <AssessmentCard
-            key={assessment.id}
+            key={`${assessment.jobId || assessment.id}-${assessment.title}`}
             assessment={assessment}
-            onDeploy={handleDeploy}
+            onDeploy={() => handleDeploy(assessment)}
             onViewResults={handleViewResults}
           />
         ))}
+        {assessments.length === 0 && (
+          <div className="card empty-assessments">
+            No assessments yet.
+          </div>
+        )}
       </div>
+
+      {deployingAssessment && (
+        <JobDeployModal
+          isOpen={!!deployingAssessment}
+          onClose={() => setDeployingAssessment(null)}
+          onConfirm={confirmDeploy}
+          title={`Deploy: ${deployingAssessment.title}`}
+        />
+      )}
+
+      {notice && (
+        <Notification
+          message={notice.message}
+          type={notice.type}
+          onClose={() => setNotice(null)}
+        />
+      )}
     </div>
   );
 };
