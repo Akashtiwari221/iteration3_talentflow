@@ -35,13 +35,13 @@ const AssessmentsHome = () => {
     setDeployingAssessment(assessment);
   };
 
-  const confirmDeploy = async (job) => {
+  const confirmDeploy = async (job, selectedTimeLimit) => {
     if (!deployingAssessment || !job) return;
     try {
       const body = {
         title: deployingAssessment.title,
         description: deployingAssessment.description,
-        timeLimit: deployingAssessment.timeLimit || 60,
+        timeLimit: Number(selectedTimeLimit || deployingAssessment.timeLimit || 60),
         sections: deployingAssessment.sections || deployingAssessment.rounds || [],
         isActive: true
       };
